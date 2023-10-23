@@ -1,0 +1,28 @@
+@import 'normalize.css';
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800&family=PT+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+
+:root {
+    --primary: #5f4c49;
+    --white: #f5f2f1;
+    --gray: #697077;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    font-size: 62.5%;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    font-size: 1.6rem;
+    font-weight: 500;
+    text-rendering: optimizeSpeed;
+    // line-height: 29px;
+    // letter-spacing: 0.02em;
+    // text-align: left;
+}
