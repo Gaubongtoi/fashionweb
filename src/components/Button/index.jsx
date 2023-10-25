@@ -13,6 +13,7 @@ function Button({
     disabled = false,
     text = false,
     icon = false,
+    upper = false,
     ...passProps
 }) {
     let Comp = 'button';
@@ -41,6 +42,7 @@ function Button({
         outline,
         disabled,
         text,
+        upper,
     });
 
     // Neu co ton tai prop la to
