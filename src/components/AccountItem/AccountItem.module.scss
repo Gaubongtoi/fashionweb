@@ -1,0 +1,18 @@
+.wrapper {
+    // padding: 8px;
+    display: flex;
+    // flex-direction: row;
+    // -webkit-box-align: center;
+    align-items: center;
+    // border-radius: 4px;
+    // transition: background 200ms ease-in-out 0s;
+    padding: 6px 16px;
+    cursor: pointer;
+    &:hover {
+        background: rgba(22, 24, 35, 0.03);
+    }
+}
+
+.product {
+    margin-left: 12px;
+}

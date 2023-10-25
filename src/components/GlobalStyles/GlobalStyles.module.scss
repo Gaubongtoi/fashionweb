@@ -26,3 +26,14 @@ body {
     // letter-spacing: 0.02em;
     // text-align: left;
 }
+
+button,
+input,
+[tabIndex] {
+    outline: none;
+    border: none;
+}
+
+a[href] {
+    color: var(--text-color);
+}
