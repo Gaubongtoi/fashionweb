@@ -1,7 +1,4 @@
 import classNames from 'classnames/bind';
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
 import styles from './Home.module.scss';
 import images from '~/assets/images';
 import ContentSection from '~/components/ContentSection';

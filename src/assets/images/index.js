@@ -3,6 +3,8 @@ const images = {
     search: require('./search.svg').default,
     thumbnail1: require('./thumbnail_1.png'),
     thumbnail2: require('./thumbnail_2.png'),
+    logo: require('./LogoContainer.svg').default,
+    email: require('./envelope.svg').default,
 };
 
 export default images;

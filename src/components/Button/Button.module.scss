@@ -36,10 +36,24 @@
 }
 
 .text {
-    &:hover {
-        text-decoration: underline;
-        transition: all 0.2s ease;
-        cursor: pointer;
+    span {
+        position: relative;
+
+        &::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            height: 4px;
+            width: 100%;
+            left: 0;
+            background-color: var(--primary);
+            transition: 0.3s;
+            transition-timing-function: ease-in-out;
+            transform: scaleX(0);
+        }
+        &:hover::after {
+            transform: scaleX(1);
+        }
     }
 }
 
@@ -51,4 +65,14 @@
     font-weight: 300;
     font-size: 2.4rem;
     text-transform: uppercase;
+}
+
+.email {
+    padding: 0;
+    margin-left: 12px;
+    width: 138px;
+    font-weight: 400;
+    background-color: #0f62fe;
+    color: var(--white);
+    border-radius: 0;
 }

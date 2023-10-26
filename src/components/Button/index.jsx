@@ -14,6 +14,7 @@ function Button({
     text = false,
     icon = false,
     upper = false,
+    email = false,
     ...passProps
 }) {
     let Comp = 'button';
@@ -43,6 +44,7 @@ function Button({
         disabled,
         text,
         upper,
+        email,
     });
 
     // Neu co ton tai prop la to
