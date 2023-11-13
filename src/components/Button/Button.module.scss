@@ -24,6 +24,11 @@
     // }
 }
 
+.primary {
+    color: var(--white);
+    background-color: var(--button-color-primary);
+}
+
 .outline {
     color: var(--primary);
     border-color: currentColor;
@@ -31,6 +36,24 @@
     &:hover {
         border-color: currentColor;
         background: rgba(254, 44, 85, 0.08);
+        cursor: pointer;
+    }
+}
+
+.rounded {
+    border-radius: 999px;
+    justify-content: center;
+
+    color: var(--white);
+    font-weight: 700;
+    font-size: 14px;
+    min-width: 90px;
+    border: 1px solid rgba(22, 24, 35, 0.12);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    padding: 13px 158px;
+    &:hover {
+        border-color: rgba(22, 24, 35, 0.2);
+        background-color: rgba(255, 255, 255, 1);
         cursor: pointer;
     }
 }

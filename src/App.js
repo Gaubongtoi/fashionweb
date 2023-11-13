@@ -1,12 +1,15 @@
 import { publicRoutes } from './routes';
 import { Fragment } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { DefaultLayout } from '~/components/Layout';
 function App() {
     return (
         // Định tuyến Router: BrownserRouter
-        <Router>
-            <div className="App">
+        <div className="App">
+            <ToastContainer />
+            <Router>
                 <Routes>
                     {publicRoutes.map((route, index) => {
                         // Mặc đinh sẽ là Default Layout
@@ -35,8 +38,8 @@ function App() {
                         );
                     })}
                 </Routes>
-            </div>
-        </Router>
+            </Router>
+        </div>
     );
 }
 

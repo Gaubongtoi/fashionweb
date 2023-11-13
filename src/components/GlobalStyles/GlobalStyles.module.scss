@@ -5,6 +5,7 @@
     --primary: #5f4c49;
     --white: #f5f2f1;
     --gray: #697077;
+    --button-color-primary: #ab8a37;
 }
 
 * {
@@ -22,6 +23,7 @@ body {
     font-size: 1.6rem;
     font-weight: 500;
     text-rendering: optimizeSpeed;
+    background-color: var(--white);
     // line-height: 29px;
     // letter-spacing: 0.02em;
     // text-align: left;
@@ -41,4 +43,9 @@ a[href] {
 ul {
     padding: 0;
     list-style: none;
+}
+
+p,
+h2 {
+    margin: 0;
 }

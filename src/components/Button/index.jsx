@@ -4,6 +4,7 @@ import classNames from 'classnames/bind';
 import { Link } from 'react-router-dom';
 const cx = classNames.bind(styles);
 function Button({
+    type,
     onClick,
     children,
     to,
@@ -11,6 +12,7 @@ function Button({
     primary = false,
     outline = false,
     disabled = false,
+    rounded = false,
     text = false,
     icon = false,
     upper = false,
@@ -20,6 +22,7 @@ function Button({
     let Comp = 'button';
     // Moi button se co 1 su kien onClick => mac dinh se co onClick vao trong props
     const props = {
+        type,
         onClick,
         ...passProps,
     };
@@ -42,6 +45,7 @@ function Button({
         primary,
         outline,
         disabled,
+        rounded,
         text,
         upper,
         email,

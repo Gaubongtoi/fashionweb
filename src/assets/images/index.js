@@ -5,6 +5,7 @@ const images = {
     thumbnail2: require('./thumbnail_2.png'),
     logo: require('./LogoContainer.svg').default,
     email: require('./envelope.svg').default,
+    logoLogin: require('./Logo_LoginSignup.png'),
 };
 
 export default images;
