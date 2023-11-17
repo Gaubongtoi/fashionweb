@@ -13,6 +13,7 @@ import * as yup from 'yup';
 const cx = classNames.bind(styles);
 function Signup() {
     const [checkDuplicate, setCheckDuplicate] = useState(false);
+    const [loading, setLoading] = useState(false)
     // const [userName, setUserName] = useState('')
     // Schema là một đối tượng mô tả cấu trúc và quy tắc kiểm tra của dữ liệu
     // 1 Schema có thể bao gồm các phương thức như string(), number(),
@@ -67,7 +68,7 @@ function Signup() {
                 // + status: 200(OK) hay là 201(Created)
                 // console.log(res);
                 if (res.data.user.name) {
-                    toast('🦄 Wow so easy!', {
+                    toast.success('Đăng ký thành công!!!!', {
                         position: 'top-right',
                         autoClose: 5000,
                         hideProgressBar: false,
