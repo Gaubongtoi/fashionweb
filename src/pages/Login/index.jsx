@@ -44,46 +44,56 @@ function Login() {
         resolver: yupResolver(schema),
     });
     const handleLogin = (data) => {
-        const dataPost = {
-            ...data,
-        };
-        console.log(dataPost);
-        // const data = {
-        //     email: 'nhattan123@gmail.com',
-        //     password: 'vunhattan123',
-        // };
         setLoading(true);
-        // console.log(data);
-        axios
-            .post('https://shop-ban-hang-backend.onrender.com/user/login', data)
-            .then((res) => {
-                localStorage.setItem('token', JSON.stringify(res.data.token));
-                // console.log(res.data.user.name);
-                navigation('/');
-                toast.success(`Chào mừng ${res.data.user.name}`, {
-                    position: 'top-right',
-                    autoClose: 5000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                    theme: 'light',
+        setTimeout(() => {
+            const dataPost = {
+                ...data,
+            };
+            console.log(dataPost);
+            // const data = {
+            //     email: 'nhattan123@gmail.com',
+            //     password: 'vunhattan123',
+            // };
+
+            // console.log(data);
+            axios
+                .post('https://shop-ban-hang-backend.onrender.com/user/login', data)
+                .then((res) => {
+                    localStorage.setItem('accessToken', JSON.stringify(res.data.token));
+                    // console.log(res.data.user.name);
+                    navigation('/');
+                    toast.success(`Chào mừng ${res.data.user.name}`, {
+                        position: 'top-right',
+                        autoClose: 5000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                        theme: 'light',
+                    });
+                    setErrorDisplay(false);
+                    setErrorMes('');
+                    setLoading(false);
+                    // console.log(res.data.token);
+                })
+                .catch((res) => {
+                    if (res.response.status) {
+                        setErrorDisplay(true);
+                        setErrorMes(res.message);
+                    }
+                    // console.log(res.message);
+                    setLoading(false);
                 });
-                setErrorDisplay(false);
-                setErrorMes('');
-                setLoading(false);
-                // console.log(res.data.token);
-            })
-            .catch((res) => {
-                if (res.response.status) {
-                    setErrorDisplay(true);
-                    setErrorMes(res.message);
-                }
-                // console.log(res.message);
-                setLoading(false);
-            });
+        }, 5000);
     };
+
+    useEffect(() => {
+        // let token = localStorage.getItem('token');
+        // if (token) {
+        //     navigation('/');
+        // }
+    });
     return (
         <div className={cx('wrapper')}>
             <div className={cx('form')}>
@@ -157,6 +167,7 @@ function Login() {
                     </p>
                 </div>
             </div>
+
             {/* <button onClick={setTimeout()}>Click here!!</button> */}
             {loading && (
                 <div className={cxx('loading')}>
