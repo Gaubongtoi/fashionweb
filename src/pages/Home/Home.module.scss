@@ -15,4 +15,54 @@
     img {
         width: 23%;
     }
+    .card {
+        cursor: pointer;
+        width: 23%;
+        position: relative;
+        overflow: hidden;
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        &:hover .card-body {
+            right: 0;
+        }
+    }
+}
+
+.card-body {
+    // width: 100vh;
+    // display: none;
+    width: 100%;
+    border-radius: 8px;
+    height: 100%;
+    top: 0;
+    right: -100%;
+    position: absolute;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    color: white;
+    // background-color: #ddd;
+    @supports (backdrop-filter: blur(3px)) {
+        backdrop-filter: blur(3px);
+        background-color: rgba(0, 0, 0, 0.5); // Màu nền với độ mờ tạo bởi backdrop-filter
+    }
+    transition: 1s;
+    .card-title {
+        font-size: 3rem;
+        font-weight: 600;
+    }
+    .card-sub-title {
+        font-size: 2rem;
+        /* padding: 10px 0; */
+        margin-bottom: 30px;
+    }
+    .card-content {
+        font-size: 1.8rem;
+        line-height: 30px;
+    }
+    // background-color: rgba(255, 255, 255, 0.4);
 }

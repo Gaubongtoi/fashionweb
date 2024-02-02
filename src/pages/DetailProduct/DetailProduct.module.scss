@@ -352,3 +352,15 @@ $white: #fff;
         display: inline-block;
     }
 }
+
+.title-size {
+    display: flex;
+    justify-content: space-between;
+    .status {
+        font-weight: 600;
+    }
+    .sold-out {
+        color: #e94545;
+        font-weight: 500;
+    }
+}

@@ -14,6 +14,11 @@ const images = {
     truck: require('./truck.svg').default,
     cart_red: require('./cart_red.svg').default,
     check_icon: require('./Check_icon.svg').default,
+    unheart: require('./unheart.svg').default,
+    ascending: require('./sort-ascending.svg').default,
+    decresase: require('./sort-down.svg').default,
+    eye: require('./eye.svg').default,
+    eye_slash: require('./eye-slash.svg').default,
 };
 
 export default images;

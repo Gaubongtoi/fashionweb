@@ -5,7 +5,19 @@ const UserContext = createContext();
 // Khoi tao Provider
 const UserProvider = ({ children }) => {
     // Khoi tao bien State de luu tru trang thai nguoi dung
-    const [currentUser, setCurrentUser] = useState(undefined);
+    const [currentUser, setCurrentUser] = useState(null);
+    const [cart, setCart] = useState([]);
+    // console.log(JSON.parse(cart));
+    const state = {
+        cart: {
+            value: cart,
+            setCart,
+        },
+        cuser: {
+            value: currentUser,
+            setCurrentUser,
+        },
+    };
     // useEffect se duoc goi moi khi Component Mounted lan dau tien
     // Y tuong: Se boc lai toan bo Web (index.js) => Toan bo children trong UserProvider se duoc phep su dung
     // nhung gia tri duoc truyen trong prop value cua Component UserContext.Provider cung nhu useEffect
@@ -18,7 +30,7 @@ const UserProvider = ({ children }) => {
             // Neu cuser tra ve null =>
             if (cuser === null) {
                 // Tien hanh lam rong lai localStorage
-                localStorage.setItem('accessToken', '');
+                localStorage.removeItem('user');
                 cuser = '';
             }
             // Set lai state cho currentUser
@@ -26,9 +38,19 @@ const UserProvider = ({ children }) => {
         };
         checkedLogin();
     }, []);
+
+    useEffect(() => {
+        if (!Boolean(localStorage.getItem('cart'))) {
+            localStorage.setItem('cart', JSON.stringify([]));
+        }
+        // const cart = localStorage.getItem('cart');
+        let cart = JSON.parse(localStorage.getItem('cart'));
+        setCart(cart);
+    }, []);
     //
+    // console.log(currentUser);
     return (
-        <UserContext.Provider value={[currentUser, setCurrentUser]}>
+        <UserContext.Provider value={state}>
             {children}
             {/* Logic: 
             + Neu nhu ton tai token thi no se duoc Routes, con neu khong se bat buoc phai Login truoc khi duoc quyen truy cap

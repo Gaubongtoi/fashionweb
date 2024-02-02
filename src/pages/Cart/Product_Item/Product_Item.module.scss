@@ -1,0 +1,116 @@
+.product-item {
+    display: flex;
+    height: 130px;
+    align-items: center;
+    border-radius: 12px;
+    border: 2px solid black;
+    padding: 20px;
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.product-size {
+    display: flex;
+    select {
+        font-size: 12px;
+        // margin: 0 10px;
+    }
+}
+
+.product-content {
+    flex-grow: 1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    .product-infor {
+        .product-name {
+            font-weight: 600;
+            font-size: 1.6rem;
+        }
+        .product-type {
+            font-weight: 500;
+            font-size: 1.4rem;
+            color: var(--gray);
+        }
+    }
+}
+
+.product-img {
+    width: 70px;
+    height: 70px;
+    margin-right: 12px;
+    // background-color: var(--primary);
+    // height: 390px;
+    .product-img-wrapper {
+        // min-height: 250px;
+        height: 100%;
+        // border: 1px solid #ddd;
+        border-radius: 12px;
+
+        img {
+            width: 100%;
+            background-color: #c6b064;
+            border-radius: 12px;
+            height: 100%;
+            object-fit: cover;
+            // background-color: var(--white);
+            // border-radius: 6px;
+        }
+    }
+}
+
+.price-quantity {
+    // text-align: center;
+    display: flex;
+    align-items: center;
+    .price {
+        margin-right: 20px;
+        .price-discount {
+            font-size: 1.8rem;
+            color: var(--secondary-500, #ab8a37);
+
+            font-weight: 700;
+        }
+        .price-origin {
+            font-size: 1.4rem;
+            color: var(--primary-300, #afa095);
+            font-weight: 400;
+            text-decoration-line: line-through;
+        }
+    }
+}
+
+.wrapper-quantity {
+    display: flex;
+    border-radius: 40px;
+    border: 1px solid #8a7268;
+    // height: 50px;
+    align-items: center;
+    span {
+        width: 30px;
+        text-align: center;
+        font-size: 22px;
+        font-weight: 600;
+        cursor: pointer;
+        color: var(--Primary-500, #8a7268);
+        // color: black;
+        user-select: none;
+        &.num {
+            width: 50px;
+            font-size: 20px;
+            pointer-events: none;
+        }
+    }
+}
+
+.remove {
+    position: absolute;
+    font-size: 24px;
+    top: 0;
+    right: 22px;
+    color: grey;
+    &:hover {
+        cursor: pointer;
+        color: black;
+    }
+}

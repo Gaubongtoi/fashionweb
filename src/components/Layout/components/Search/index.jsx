@@ -82,7 +82,7 @@ function Search() {
                         <PopperWrapper overflow>
                             <p className={cx('title-search-result')}>Gợi ý sản phẩm</p>
                             {searchResult.map((result) => (
-                                <Link key={result.id} to={'/product/' + result.id}>
+                                <Link key={result.id} to={'/product/' + result.id} onClick={() => handleClear()}>
                                     <ProductItem data={result} />
                                 </Link>
                             ))}

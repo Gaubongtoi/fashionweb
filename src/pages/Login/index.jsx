@@ -3,7 +3,8 @@ import styless from '~/components/Layout/LoginSignup/LoginSignup.module.scss';
 import classNames from 'classnames/bind';
 import { Link, useNavigate } from 'react-router-dom';
 import Button from '~/components/Button';
-import { useState, useRef, useEffect } from 'react';
+// import { useState, useEffect,  } from 'react';
+import { useState, useRef, useEffect, useContext } from 'react';
 import { HashLoader } from 'react-spinners';
 // import { FontAwesomeIcon } from '@fortawesome/react-fontawesome/';
 // import { faExclamation } from '@fortawesome/free-solid-svg-icons';
@@ -12,6 +13,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { toast } from 'react-toastify';
 import axios from 'axios';
+import { UserContext } from '~/hooks/UserContext';
 
 // import LoginSignUp from '../LoginSignup';
 const cx = classNames.bind(styles);
@@ -23,7 +25,7 @@ function Login() {
     const [errorDisplay, setErrorDisplay] = useState(false);
     const [errorMes, setErrorMes] = useState('');
     const [loading, setLoading] = useState(false);
-
+    const state = useContext(UserContext);
     const schema = yup
         .object()
         .shape({
@@ -57,12 +59,10 @@ function Login() {
 
             // console.log(data);
             axios
-                .post('https://shop-ban-hang-backend.onrender.com/user/login', data)
+                .post('http://localhost:4000' + '/auth/login', dataPost)
                 .then((res) => {
-                    localStorage.setItem('accessToken', JSON.stringify(res.data.token));
-                    // console.log(res.data.user.name);
-                    navigation('/');
-                    toast.success(`Chào mừng ${res.data.user.name}`, {
+                    console.log(res);
+                    toast.success(`Chào mừng ${res.data.res.fullname}`, {
                         position: 'top-right',
                         autoClose: 5000,
                         hideProgressBar: false,
@@ -72,16 +72,22 @@ function Login() {
                         progress: undefined,
                         theme: 'light',
                     });
+                    const { access_token, refresh_token } = res.data;
+                    localStorage.setItem('user', JSON.stringify(res.data.res));
+                    localStorage.setItem('accessToken', JSON.stringify(access_token));
+                    localStorage.setItem('refreshToken', JSON.stringify(refresh_token));
+                    state.cuser.setCurrentUser(res.data.res);
                     setErrorDisplay(false);
                     setErrorMes('');
                     setLoading(false);
-                    // console.log(res.data.token);
+                    navigation('/');
                 })
                 .catch((res) => {
+                    console.log(res);
                     if (res.response.status) {
                         setErrorDisplay(true);
                         setErrorMes(res.message);
-                    }
+                    } else console.log(res.message);
                     // console.log(res.message);
                     setLoading(false);
                 });

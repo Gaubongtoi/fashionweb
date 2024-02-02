@@ -1,0 +1,103 @@
+.wrapper {
+}
+
+.wrapper-content {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+    .side-bar-user {
+        width: 20%;
+    }
+    .content {
+        width: 70%;
+    }
+}
+
+.path {
+    // box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
+    // min-width: 70%;
+    font-size: 1.6rem;
+    // background-color: #edf0f8;
+    display: flex;
+    // height: 44px;
+    padding-bottom: 12px;
+    align-items: center;
+    li {
+        color: var(--Type-Low-Emphasis, #626262);
+        font-weight: 600;
+        p {
+            color: var(--Primary, #5f4c49);
+            font-weight: 600;
+        }
+    }
+
+    a:last-child {
+        font-weight: 500;
+        color: black;
+    }
+    span {
+        color: black;
+        padding: 0 14px;
+        font-weight: 700;
+    }
+}
+
+.list-user {
+    border-radius: 8px;
+    background-color: white;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+    li {
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 16px 16px;
+        color: black;
+        font-size: 1.6rem;
+        // font-style: normal;
+        font-weight: 500;
+        // line-height: 20px; /* 125% */
+        &:hover {
+            font-weight: 700;
+        }
+        &.isActive {
+            font-weight: 700;
+            border-left: 3px solid var(--primary);
+            background-color: lighten(#5f4c49, 50%);
+            // border-radius: 8px;
+            // border-top-left-radius: 8px;
+            // border-bottom-left-radius: 8px;
+        }
+    }
+}
+
+.title {
+    color: #5f4c49;
+    font-size: 3.4rem;
+    font-weight: 600;
+    // margin: 12px 0;
+    margin-bottom: 12px;
+    display: flex;
+    justify-content: space-between;
+    .logout {
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        width: 136px;
+        padding: 8px;
+        justify-content: center;
+        border-radius: 8px;
+        border: 1px solid var(--Primary, #5f4c49);
+        color: var(--Primary, #5f4c49);
+        font-size: 1.6rem;
+        font-weight: 600;
+        &:hover {
+            // font-weight: 600;
+            color: white;
+            background: var(--Primary, #5f4c49);
+        }
+        p {
+            margin-left: 6px;
+        }
+    }
+}

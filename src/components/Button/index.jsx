@@ -1,3 +1,4 @@
+import { faL } from '@fortawesome/free-solid-svg-icons';
 import styles from './Button.module.scss';
 import classNames from 'classnames/bind';
 import { forwardRef } from 'react';
@@ -22,6 +23,9 @@ const Button = forwardRef(
             upper = false,
             email = false,
             shopping = false,
+            order = false,
+            payment = false,
+            edit = false,
             ...passProps
         },
         ref,
@@ -57,6 +61,9 @@ const Button = forwardRef(
             upper,
             email,
             shopping,
+            order,
+            payment,
+            edit,
         });
 
         // Neu co ton tai prop la to

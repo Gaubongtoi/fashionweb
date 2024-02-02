@@ -1,0 +1,45 @@
+.wrapper {
+    display: inline-block;
+    width: 37px;
+    height: 37px;
+    text-transform: uppercase;
+    color: #fff;
+    font-weight: 600;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    letter-spacing: 1px;
+
+    -webkit-user-select: none; /* Safari */
+    -ms-user-select: none; /* IE 10 and IE 11 */
+    user-select: none; /* Standard syntax */
+}
+
+.bgA_1 {
+    background-color: rgb(245, 123, 123);
+}
+.bgA_2 {
+    background-color: rgb(244, 207, 75);
+}
+.bgA_3 {
+    background-color: rgb(172, 241, 134);
+}
+.bgA_4 {
+    background-color: rgb(102, 212, 183);
+}
+.bgA_5 {
+    background-color: rgb(148, 148, 238);
+}
+.bgA_6 {
+    background-color: rgb(206, 138, 225);
+}
+.bgA_7 {
+    background-color: rgb(118, 98, 104);
+}
+.bgA_8 {
+    background-color: rgb(136, 164, 158);
+}
+.bgA_9 {
+    background-color: rgb(126, 150, 123);
+}

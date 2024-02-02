@@ -6,4 +6,9 @@
     padding-top: 8px;
     background-color: rgb(255, 255, 255);
     box-shadow: rgb(0 0 0 / 12%) 0px 2px 12px;
+    max-height: 200px;
+    overflow-y: scroll;
+    &::-webkit-scrollbar {
+        display: none;
+    }
 }

@@ -1,7 +1,6 @@
 export const formatPrice = (price) => {
     if (Number.isFinite(price)) {
-        let result = price / 25000;
-        return result.toFixed(2).toLocaleString('en-US', { style: 'currency', currency: '$' });
+        return price.toLocaleString('vi', { style: 'currency', currency: 'VND' });
     }
     return 'Tham số không phải số';
 };

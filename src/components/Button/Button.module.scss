@@ -148,3 +148,40 @@ $color: #ab8a37;
     // background: darken($red, 1.5%);
     // font-weight: 100;
 }
+
+.order {
+    width: 100%;
+    &:hover {
+        background-color: darken(#ab8a37, 10%);
+    }
+}
+
+.payment {
+    display: block;
+    margin-top: 10px;
+    width: 100%;
+    height: 48px;
+    border: 1px solid var(--text-color);
+    color: white;
+    font-weight: 600;
+    // background-color: var(--text-color);
+    background-color: var(--button-color-primary);
+    border-radius: 4px;
+    box-shadow: inset 0 0 0 0 #fff;
+    font-size: 14px;
+    outline: none;
+    transition: ease-out 0.5s;
+}
+
+.payment:hover {
+    box-shadow: inset 300px 0 0 0 #fff;
+    background-color: black;
+    color: black;
+    border-color: white;
+    cursor: pointer;
+}
+
+.edit {
+    color: white;
+    background: var(--Primary, #1b4b66);
+}
