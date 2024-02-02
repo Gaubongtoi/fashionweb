@@ -25,6 +25,7 @@ function Signup() {
     const schema = yup
         .object()
         .shape({
+            fullname: yup.string().required('Bạn cần nhập trường này'),
             name: yup.string().required('Bạn cần nhập trường này'),
             email: yup.string().required('Bạn cần nhập trường này').email('Email không hợp lệ'),
             phoneNumber: yup
@@ -40,6 +41,7 @@ function Signup() {
                 .string()
                 .required('Bạn cần nhập trường này')
                 .oneOf([yup.ref('password')], 'Mật khẩu không khớp'),
+            address: yup.string().required('Bạn cần nhập trường này'),
         })
         .required();
     const {
@@ -58,16 +60,24 @@ function Signup() {
     const onSubmit = (data) => {
         // console.log({ ...data });
         const dataPost = {
-            ...data,
+            // ...data,
+            fullname: data.fullname,
+            name: data.name,
+            email: data.email,
+            password: data.password,
+            rePassword: data.passwordCF,
+            phone: data.phoneNumber,
+            address: data.address,
         };
         console.log(dataPost);
         axios
-            .post('https://shop-ban-hang-backend.onrender.com/user', dataPost)
+            .post('http://localhost:4000/auth/register', dataPost)
             .then((res) => {
+                console.log(res);
                 // res: res này thường sẽ trả về
                 // + status: 200(OK) hay là 201(Created)
                 // console.log(res);
-                if (res.data.user.name) {
+                if (res.data.err === 1) {
                     toast.success('Đăng ký thành công!!!!', {
                         position: 'top-right',
                         autoClose: 5000,
@@ -97,6 +107,13 @@ function Signup() {
                     <p>Sign up</p>
                 </div>
                 <div className={cx('fill-in-form')}>
+                    <div className={cx('inputField')}>
+                        <label htmlFor="fullname" className="form-label">
+                            Fullname
+                        </label>
+                        <input id="fullname" {...register('fullname')} type="text" className="form-control" />
+                        {errors.fullname && <span className="form-message">{errors.fullname.message}</span>}
+                    </div>
                     <div className={cx('inputField')}>
                         <label htmlFor="name" className="form-label">
                             Username
@@ -181,6 +198,24 @@ function Signup() {
                             // value={user}
                         />
                         {errors.phoneNumber && <span className="form-message">{errors.phoneNumber.message}</span>}
+                    </div>
+                    <div className={cx('inputField')}>
+                        <label htmlFor="address" className="form-label">
+                            Address
+                        </label>
+                        <input
+                            id="address"
+                            name="address"
+                            type="tel"
+                            className="form-control"
+                            // pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}"
+                            {...register('address')}
+
+                            // ref={userRef}
+                            // onChange={(e) => setUser(e.target.value)}
+                            // value={user}
+                        />
+                        {errors.address && <span className="form-message">{errors.address.message}</span>}
                     </div>
                     {/* <input type="submit" /> */}
                     <Button
