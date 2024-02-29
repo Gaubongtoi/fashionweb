@@ -26,6 +26,8 @@ const Button = forwardRef(
             order = false,
             payment = false,
             edit = false,
+            managerOrder = false,
+            manageReturn = false,
             ...passProps
         },
         ref,
@@ -64,6 +66,8 @@ const Button = forwardRef(
             order,
             payment,
             edit,
+            managerOrder,
+            manageReturn,
         });
 
         // Neu co ton tai prop la to

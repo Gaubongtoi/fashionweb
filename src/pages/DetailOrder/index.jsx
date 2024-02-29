@@ -11,6 +11,7 @@ import { Button, Modal } from 'antd';
 const cx = classNames.bind(styles);
 function DetailOrder() {
     const param = useParams();
+    // console.log(param);
     const [order, setOrder] = useState([]);
     const [isLoading, dispatch] = useContext(StoreContext);
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -118,7 +119,9 @@ function DetailOrder() {
 
         // return `${expecDay[1]}/${expecDay[0]}/${expecDay[2]}`;
     };
-
+    const handleReturn = () => {
+        navigator(`/user/order/detail/return/${param.id}`);
+    };
     console.log(param.id);
     useEffect(() => {
         axios.get(`http://localhost:3000/orders/${param.id}`).then((res) => {
@@ -129,6 +132,7 @@ function DetailOrder() {
             console.log(res.data);
         });
     }, []);
+    console.log(order?.status);
     return (
         <>
             <div className={cx('wrapper')}>
@@ -157,24 +161,285 @@ function DetailOrder() {
                                     Cancel Order
                                 </button>
                             )}
-                            {order?.status === 2 && (
-                                <button className={cx('cancel')} onClick={showModal}>
-                                    Cancel Order
-                                </button>
-                            )}
+                            {order?.status === 2 &&
+                                (order?.isPay === 2 ? (
+                                    <button
+                                        className={cx('cancel')}
+                                        onClick={() => {
+                                            axios
+                                                .patch(`http://localhost:3000/orders/${order?.id}`, {
+                                                    isPay: 1,
+                                                    status: 3,
+                                                })
+                                                .then((res) => {
+                                                    console.log(res);
+                                                    // setCheckChange((prev) => !prev);
+                                                    toast.success('Đã hoàn tất thanh toán đầy đủ. Cảm ơn quý khách!!');
+                                                    navigator('/user/order');
+                                                })
+                                                .catch((err) => console.log(err));
+                                        }}
+                                    >
+                                        Xác nhận thanh toán
+                                    </button>
+                                ) : (
+                                    <button className={cx('cancel')} onClick={showModal}>
+                                        Cancel Order
+                                    </button>
+                                ))}
+                            {order?.status === 3 &&
+                                (order?.isPay === 2 ? (
+                                    <button className={cx('return')} onClick={showModal}>
+                                        Cancel Order
+                                    </button>
+                                ) : (
+                                    <button className={cx('return')} onClick={handleReturn}>
+                                        Return Product
+                                    </button>
+                                ))}
                             {/* {order?.status === 1 && <button className={cx('cancel')}>Cancel Order</button>} */}
                         </div>
                     </div>
                     <div className={cx('process-information')}>
                         <div className={cx('left-content')}>
+                            <div className={cx('pixelplus-steps-steps')}>
+                                <div className={cx('pixelplus-steps-step', 'active')} data-id="0">
+                                    <div className={cx('pixelplus-steps-step__number')}></div>
+                                    <div className={cx('pixelplus-steps-step__text')}>
+                                        <div className={cx('pixelplus-steps-step__title')}>
+                                            <strong>Order</strong>
+                                        </div>
+                                        <div
+                                            className={cx('pixelplus-steps-step__excerpt')}
+                                            style={{ display: 'block' }}
+                                        >
+                                            <p>{date(order?.createdAt)}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                {order?.status === 1 && (
+                                    <>
+                                        <div className={cx('pixelplus-steps-step', 'active')} data-id="1">
+                                            <div className={cx('pixelplus-steps-step__number')}></div>
+                                            <div className={cx('pixelplus-steps-step__text')}>
+                                                <div className={cx('pixelplus-steps-step__title')}>
+                                                    <strong>Confirmation</strong>
+                                                </div>
+                                                <div
+                                                    className={cx('pixelplus-steps-step__excerpt')}
+                                                    style={{ display: 'block' }}
+                                                >
+                                                    <p>Please Waiting Confirmation for Your Order</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className={cx('pixelplus-steps-step')} data-id="2">
+                                            <div className={cx('pixelplus-steps-step__number')}></div>
+                                            <div className={cx('pixelplus-steps-step__text')}>
+                                                <div className={cx('pixelplus-steps-step__title')}>
+                                                    <strong>Delivering</strong>
+                                                </div>
+                                                <div
+                                                    className={cx('pixelplus-steps-step__excerpt')}
+                                                    style={{ display: 'block' }}
+                                                >
+                                                    {/* <p></p> */}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className={cx('pixelplus-steps-step')} data-id="3">
+                                            <div className={cx('pixelplus-steps-step__number')}></div>
+                                            <div className={cx('pixelplus-steps-step__text')}>
+                                                <div className={cx('pixelplus-steps-step__title')}>
+                                                    {' '}
+                                                    <strong>Completed</strong>
+                                                </div>
+                                                <div
+                                                    className={cx('pixelplus-steps-step__excerpt')}
+                                                    style={{ display: 'block' }}
+                                                >
+                                                    <p></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </>
+                                )}
+                                {order?.status === 2 && (
+                                    <>
+                                        <div className={cx('pixelplus-steps-step', 'active')} data-id="1">
+                                            <div className={cx('pixelplus-steps-step__number')}></div>
+                                            <div className={cx('pixelplus-steps-step__text')}>
+                                                <div className={cx('pixelplus-steps-step__title')}>
+                                                    <strong>Confirmation</strong>
+                                                </div>
+                                                <div
+                                                    className={cx('pixelplus-steps-step__excerpt')}
+                                                    style={{ display: 'block' }}
+                                                >
+                                                    <p></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className={cx('pixelplus-steps-step', 'active')} data-id="2">
+                                            <div className={cx('pixelplus-steps-step__number')}></div>
+                                            <div className={cx('pixelplus-steps-step__text')}>
+                                                <div className={cx('pixelplus-steps-step__title')}>
+                                                    <strong>Delivering</strong>
+                                                </div>
+                                                <div
+                                                    className={cx('pixelplus-steps-step__excerpt')}
+                                                    style={{ display: 'block' }}
+                                                >
+                                                    <p>Estimated {expectedDate(order?.createdAt, order?.shipment)}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className={cx('pixelplus-steps-step')} data-id="3">
+                                            <div className={cx('pixelplus-steps-step__number')}></div>
+                                            <div className={cx('pixelplus-steps-step__text')}>
+                                                <div className={cx('pixelplus-steps-step__title')}>
+                                                    {' '}
+                                                    <strong>Completed</strong>
+                                                </div>
+                                                <div
+                                                    className={cx('pixelplus-steps-step__excerpt')}
+                                                    style={{ display: 'block' }}
+                                                >
+                                                    <p></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </>
+                                )}
+                                {order?.status === 3 && (
+                                    <>
+                                        <div className={cx('pixelplus-steps-step', 'active')} data-id="1">
+                                            <div className={cx('pixelplus-steps-step__number')}></div>
+                                            <div className={cx('pixelplus-steps-step__text')}>
+                                                <div className={cx('pixelplus-steps-step__title')}>
+                                                    <strong>Confirmation</strong>
+                                                </div>
+                                                <div
+                                                    className={cx('pixelplus-steps-step__excerpt')}
+                                                    style={{ display: 'block' }}
+                                                >
+                                                    <p></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className={cx('pixelplus-steps-step', 'active')} data-id="2">
+                                            <div className={cx('pixelplus-steps-step__number')}></div>
+                                            <div className={cx('pixelplus-steps-step__text')}>
+                                                <div className={cx('pixelplus-steps-step__title')}>
+                                                    <strong>Delivering</strong>
+                                                </div>
+                                                <div
+                                                    className={cx('pixelplus-steps-step__excerpt')}
+                                                    style={{ display: 'block' }}
+                                                >
+                                                    <p></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className={cx('pixelplus-steps-step', 'active')} data-id="3">
+                                            <div className={cx('pixelplus-steps-step__number')}></div>
+                                            <div className={cx('pixelplus-steps-step__text')}>
+                                                <div className={cx('pixelplus-steps-step__title')}>
+                                                    {' '}
+                                                    <strong>Completed</strong>
+                                                </div>
+                                                <div
+                                                    className={cx('pixelplus-steps-step__excerpt')}
+                                                    style={{ display: 'block' }}
+                                                >
+                                                    <p></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </>
+                                )}
+                                {order?.status === 4 && (
+                                    <>
+                                        <div className={cx('pixelplus-steps-step', 'active')} data-id="1">
+                                            <div className={cx('pixelplus-steps-step__number')}></div>
+                                            <div className={cx('pixelplus-steps-step__text')}>
+                                                <div className={cx('pixelplus-steps-step__title')}>
+                                                    <strong>Confirmation</strong>
+                                                </div>
+                                                <div
+                                                    className={cx('pixelplus-steps-step__excerpt')}
+                                                    style={{ display: 'block' }}
+                                                >
+                                                    <p></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className={cx('pixelplus-steps-step', 'active')} data-id="2">
+                                            <div className={cx('pixelplus-steps-step__number')}></div>
+                                            <div className={cx('pixelplus-steps-step__text')}>
+                                                <div className={cx('pixelplus-steps-step__title')}>
+                                                    <strong>Cancel Order</strong>
+                                                </div>
+                                                <div
+                                                    className={cx('pixelplus-steps-step__excerpt')}
+                                                    style={{ display: 'block' }}
+                                                >
+                                                    <p>Your Order Have Been Canceled</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </>
+                                )}
+                                {/* <div className={cx('pixelplus-steps-step')} data-id="1">
+                                    <div className={cx('pixelplus-steps-step__number')}></div>
+                                    <div className={cx('pixelplus-steps-step__text')}>
+                                        <div className={cx('pixelplus-steps-step__title')}>
+                                            <strong>Confirmation</strong>
+                                        </div>
+                                        <div
+                                            className={cx('pixelplus-steps-step__excerpt')}
+                                            style={{ display: 'block' }}
+                                        >
+                                            <p></p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className={cx('pixelplus-steps-step')} data-id="2">
+                                    <div className={cx('pixelplus-steps-step__number')}></div>
+                                    <div className={cx('pixelplus-steps-step__text')}>
+                                        <div className={cx('pixelplus-steps-step__title')}>
+                                            <strong>Delivering</strong>
+                                        </div>
+                                        <div
+                                            className={cx('pixelplus-steps-step__excerpt')}
+                                            style={{ display: 'block' }}
+                                        >
+                                            <p></p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className={cx('pixelplus-steps-step')} data-id="3">
+                                    <div className={cx('pixelplus-steps-step__number')}></div>
+                                    <div className={cx('pixelplus-steps-step__text')}>
+                                        <div className={cx('pixelplus-steps-step__title')}>
+                                            {' '}
+                                            <strong>Completed</strong>
+                                        </div>
+                                        <div
+                                            className={cx('pixelplus-steps-step__excerpt')}
+                                            style={{ display: 'block' }}
+                                        >
+                                            <p></p>
+                                        </div>
+                                    </div>
+                                </div> */}
+                            </div>
                             <div className={cx('name')}>
                                 <div className={cx('first-name')}>
-                                    <p className={cx('label')}>First name:</p>
-                                    <p>{order?.firstname}</p>
-                                </div>
-                                <div className={cx('last-name')}>
-                                    <p className={cx('label')}>Last name:</p>
-                                    <p>{order?.lastname}</p>
+                                    <p className={cx('label')}>Full name:</p>
+                                    <p>
+                                        {order?.firstname} {order?.lastname}
+                                    </p>
                                 </div>
                             </div>
                             <div className={cx('address')}>
@@ -191,10 +456,10 @@ function DetailOrder() {
                                 <p className={cx('label')}>Payment Method: </p>
                                 <p>{order?.payment === 'cod' ? 'COD - Cash On Delivery' : ''}</p>
                             </div>
-                            <div className={cx('order-date')}>
+                            {/* <div className={cx('order-date')}>
                                 <p className={cx('label')}>Order Date: </p>
                                 <p>{date(order?.createdAt)}</p>
-                            </div>
+                            </div> */}
                         </div>
                         <div className={cx('right-content')}>
                             <div className={cx('order-wrapper')}>

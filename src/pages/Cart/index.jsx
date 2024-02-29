@@ -19,6 +19,7 @@ const cx = classNames.bind(styles);
 
 function Cart() {
     const [product, setProduct] = useState([]);
+    console.log(product);
     const [display, setDisplay] = useState(false);
     const [city, setCity] = useState('');
     const [shipment, setShipment] = useState('save');
@@ -60,21 +61,47 @@ function Cart() {
     // console.log(totalProduct);
     // console.log(product);
     const state = useContext(UserContext);
+    console.log(state?.cart?.value);
     useEffect(() => {
-        let product_id = state.cart.value.map((i) => i.id).toString();
-        // console.log(product_cart);
-        axios.get(`https://shoesshop-6n6z.onrender.com/shoesList/${product_id}`).then((res) => {
-            let product_cart = state?.cart?.value;
-            // console.log(res.data);
-            let a = product_cart?.map((item) => {
-                return {
-                    ...item,
-                    product: res.data.find((i) => i.id == item.id),
-                };
-            });
-            setProduct(a);
-            // console.log(a);
-        });
+        let product_id = state.cart.value.map((i) => i.id);
+        const fetchProducts = async () => {
+            try {
+                const baseUrl = 'http://localhost:3000/product';
+                const requests = product_id?.map((id) => axios.get(`${baseUrl}/${id}`));
+                const responses = await Promise.all(requests);
+                const products = responses.map((response) => response.data);
+                let product_cart = state?.cart?.value;
+                // console.log(product_cart);
+                let a = product_cart?.map((item) => {
+                    console.log(products);
+
+                    return {
+                        ...item,
+                        product: products?.find((i) => i.id == item.id),
+                    };
+                });
+                console.log('Hello');
+                console.log(products);
+                setProduct(a);
+                // setProduct(products);
+            } catch (error) {
+                console.error('Lỗi khi lấy danh sách sản phẩm:', error);
+            }
+        };
+
+        // Gọi hàm lấy danh sách sản phẩm
+        fetchProducts();
+        // axios.get(`https://shoesshop-6n6z.onrender.com/shoesList/${product_id}`).then((res) => {
+        //     let product_cart = state?.cart?.value;
+        //     // console.log(res.data);
+        //     let a = product_cart?.map((item) => {
+        //         return {
+        //             ...item,
+        //             product: res.data.find((i) => i.id == item.id),
+        //         };
+        //     });
+        //     setProduct(a);
+        //     // console.log(a);
     }, [state.cart.value]);
 
     const subtotal = useMemo(() => {
@@ -139,6 +166,7 @@ function Cart() {
                 </div>
                 <div className={cx('product')}>
                     {product?.map((item, i) => {
+                        console.log(item);
                         return <Product_Item item={item} key={i} index={i}></Product_Item>;
                     })}
                 </div>

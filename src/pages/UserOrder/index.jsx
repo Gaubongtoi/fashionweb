@@ -5,6 +5,8 @@ import { UserContext } from '~/hooks/UserContext';
 import axios from 'axios';
 import { formatPrice, priceDiscount } from '~/common';
 import { useNavigate } from 'react-router-dom';
+import Button from '~/components/Button';
+import { toast } from 'react-toastify';
 const cx = classNames.bind(styles);
 
 function UserOrder() {
@@ -50,130 +52,6 @@ function UserOrder() {
             </ul>
             <div className={cx('table')}>
                 <Orders orders={orders} userID={state?.cuser?.value?.id} />
-                {/* <div className={cx('order')}>
-                    <div className={cx('header-bill')}>
-                        <ul className={cx('title-bill')}>
-                            <li>
-                                <div className={cx('status')}>
-                                    <p className={cx('row-title')}>Status</p>
-                                    <p>Shipped</p>
-                                </div>
-                            </li>
-                            <li>
-                                <div className={cx('order-id')}>
-                                    <p className={cx('row-title')}>Order ID</p>
-                                    <p>#1-DN</p>
-                                </div>
-                            </li>
-                            <li>
-                                <div className={cx('total')}>
-                                    <p className={cx('row-title')}>Total</p>
-                                    <p>1.000.000 VND</p>
-                                </div>
-                            </li>
-                            <li>
-                                <div className={cx('detail')}>
-                                    <button>See Detail</button>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                    <div className={cx('body-bill')}>
-                        <div className={cx('message-status')}>
-                            <p>Estimated delivery: 4 Aug , 2002</p>
-                        </div>
-                        <div className={cx('product')}>
-                            <div className={cx('product-img')}>
-                                <div className={cx('product-img-wrapper')}>
-                                    <img
-                                        src={`https://shoesshop-6n6z.onrender.com/imgs/68ae7ea7849b43eca70aac1e00f5146d_9366-removebg-preview.png`}
-                                    />
-                                </div>
-                            </div>
-                            <div className={cx('cart-item-infor')}>
-                                <div className={cx('left-infor')}>
-                                    <p className={cx('cart-item-name')}>San pham 1</p>
-
-                                    <div className={cx('cart-item-quantity')}>
-                                        <p>
-                                            Size: <span>{prod?.size}</span>
-                                            Size: <span>12</span>
-                                        </p>
-                                        <p>
-                                            x<span>{prod?.quantity}</span>x<span>12</span>
-                                        </p>
-                                    </div>
-                                </div>
-                                <div className={cx('right-infor')}>
-                                    <span className={cx('cart-item-price')}>
-                                        {formatPrice(priceDiscount(prod?.product?.price, prod?.product?.discount_id))}
-                                        1.000.000vnd
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                        <div className={cx('product')}>
-                            <div className={cx('product-img')}>
-                                <div className={cx('product-img-wrapper')}>
-                                    <img
-                                        src={`https://shoesshop-6n6z.onrender.com/imgs/68ae7ea7849b43eca70aac1e00f5146d_9366-removebg-preview.png`}
-                                    />
-                                </div>
-                            </div>
-                            <div className={cx('cart-item-infor')}>
-                                <div className={cx('left-infor')}>
-                                    <p className={cx('cart-item-name')}>San pham 1</p>
-
-                                    <div className={cx('cart-item-quantity')}>
-                                        <p>
-                                            Size: <span>{prod?.size}</span>
-                                            Size: <span>12</span>
-                                        </p>
-                                        <p>
-                                            x<span>{prod?.quantity}</span>x<span>12</span>
-                                        </p>
-                                    </div>
-                                </div>
-                                <div className={cx('right-infor')}>
-                                    <span className={cx('cart-item-price')}>
-                                        {formatPrice(priceDiscount(prod?.product?.price, prod?.product?.discount_id))}
-                                        1.000.000vnd
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                        <div className={cx('product')}>
-                            <div className={cx('product-img')}>
-                                <div className={cx('product-img-wrapper')}>
-                                    <img
-                                        src={`https://shoesshop-6n6z.onrender.com/imgs/68ae7ea7849b43eca70aac1e00f5146d_9366-removebg-preview.png`}
-                                    />
-                                </div>
-                            </div>
-                            <div className={cx('cart-item-infor')}>
-                                <div className={cx('left-infor')}>
-                                    <p className={cx('cart-item-name')}>San pham 1</p>
-
-                                    <div className={cx('cart-item-quantity')}>
-                                        <p>
-                                            Size: <span>{prod?.size}</span>
-                                            Size: <span>12</span>
-                                        </p>
-                                        <p>
-                                            x<span>{prod?.quantity}</span>x<span>12</span>
-                                        </p>
-                                    </div>
-                                </div>
-                                <div className={cx('right-infor')}>
-                                    <span className={cx('cart-item-price')}>
-                                        {formatPrice(priceDiscount(prod?.product?.price, prod?.product?.discount_id))}
-                                        1.000.000vnd
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div> */}
             </div>
         </div>
     );
@@ -300,6 +178,36 @@ function Orders({ orders, userID }) {
                                     </div>
                                 );
                             })}
+                            <div className={cx('received')}>
+                                {order?.status === 2 &&
+                                    (order?.isPay === 2 ? (
+                                        <Button
+                                            primary
+                                            onClick={() => {
+                                                axios
+                                                    .patch(`http://localhost:3000/orders/${order?.id}`, {
+                                                        isPay: 1,
+                                                        status: 3,
+                                                    })
+                                                    .then((res) => {
+                                                        console.log(res);
+                                                        // setCheckChange((prev) => !prev);
+                                                        toast.success(
+                                                            'Đã hoàn tất thanh toán đầy đủ. Cảm ơn quý khách!!',
+                                                        );
+                                                        navigator('/user/order');
+                                                    })
+                                                    .catch((err) => console.log(err));
+                                            }}
+                                        >
+                                            Received
+                                        </Button>
+                                    ) : (
+                                        <Button primary disabled>
+                                            Received
+                                        </Button>
+                                    ))}
+                            </div>
                         </div>
                     </div>
                 );

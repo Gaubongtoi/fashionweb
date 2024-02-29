@@ -8,7 +8,6 @@ import { useState, useEffect, useContext, useMemo } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { UserContext } from '~/hooks/UserContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import Button from '~/components/Button';
 import images from '~/assets/images';
 import Search from '../Search';
@@ -39,20 +38,61 @@ function Header() {
         }, 0);
     }, [cartHeader]);
     useEffect(() => {
-        // let cart = JSON.parse(localStorage.getItem('cart'));
-        let cart_prod_id = state.cart.value.map((i) => i.id).toString();
-        // console.log(cart);
-        axios.get('https://shoesshop-6n6z.onrender.com/shoesList/' + cart_prod_id).then((res) => {
-            let product_api = JSON.parse(localStorage.getItem('cart'));
-            let product_cart = product_api.map((item) => {
-                return {
-                    ...item,
-                    product: res.data.find((i) => i.id === item.id),
-                };
-            });
-            setCartHeader(product_cart);
-        });
+        let product_id = state.cart.value.map((i) => i.id);
+        const fetchProducts = async () => {
+            try {
+                const baseUrl = 'http://localhost:3000/product';
+                const requests = product_id?.map((id) => axios.get(`${baseUrl}/${id}`));
+                const responses = await Promise.all(requests);
+                const products = responses.map((response) => response.data);
+                let product_cart = state?.cart?.value;
+                // console.log(product_cart);
+                let a = product_cart?.map((item) => {
+                    console.log(products);
+
+                    return {
+                        ...item,
+                        product: products?.find((i) => i.id == item.id),
+                    };
+                });
+                console.log('Hello');
+                console.log(products);
+                setCartHeader(a);
+                // setProduct(products);
+            } catch (error) {
+                console.error('Lỗi khi lấy danh sách sản phẩm:', error);
+            }
+        };
+
+        // Gọi hàm lấy danh sách sản phẩm
+        fetchProducts();
+        // axios.get(`https://shoesshop-6n6z.onrender.com/shoesList/${product_id}`).then((res) => {
+        //     let product_cart = state?.cart?.value;
+        //     // console.log(res.data);
+        //     let a = product_cart?.map((item) => {
+        //         return {
+        //             ...item,
+        //             product: res.data.find((i) => i.id == item.id),
+        //         };
+        //     });
+        //     setProduct(a);
+        //     // console.log(a);
     }, [state.cart.value]);
+    // useEffect(() => {
+    //     // let cart = JSON.parse(localStorage.getItem('cart'));
+    //     let cart_prod_id = state.cart.value.map((i) => i.id).toString();
+    //     // console.log(cart);
+    //     axios.get('https://shoesshop-6n6z.onrender.com/shoesList/' + cart_prod_id).then((res) => {
+    //         let product_api = JSON.parse(localStorage.getItem('cart'));
+    //         let product_cart = product_api.map((item) => {
+    //             return {
+    //                 ...item,
+    //                 product: res.data.find((i) => i.id === item.id),
+    //             };
+    //         });
+    //         setCartHeader(product_cart);
+    //     });
+    // }, [state.cart.value]);
     // const cart = localStorage.getItem('cart');
     // console.log(cart);
     return (
@@ -170,37 +210,77 @@ function Header() {
                                 <div className={cx('user-infor')}>
                                     <div className={cx('avatar')} onClick={() => setDisplay((prev) => !prev)}>
                                         <AvatarAuto nameU={user?.fullname} />
-                                        <div className={cx('dropdown-content', display ? 'active' : '')}>
-                                            <Link to={'/user/profile'}>
-                                                <div className={cx('dropdown-item')}>
-                                                    <FontAwesomeIcon icon={faUser} />
-                                                    <p className={cx('option')}>Your Profile</p>
+                                        {state?.cuser?.value?.Role?.id === 3 ? (
+                                            <div className={cx('dropdown-content', display ? 'active' : '')}>
+                                                <Link to={'/user/profile'}>
+                                                    <div className={cx('dropdown-item')}>
+                                                        <FontAwesomeIcon icon={faUser} />
+                                                        <p className={cx('option')}>Your Profile</p>
+                                                    </div>
+                                                </Link>
+                                                <Link to={'/user/order'}>
+                                                    <div className={cx('dropdown-item')}>
+                                                        <FontAwesomeIcon icon={faWallet} />
+                                                        <p className={cx('option')}>Purchase Order</p>
+                                                    </div>
+                                                </Link>
+                                                <Link to={'/user/password'}>
+                                                    <div className={cx('dropdown-item')}>
+                                                        <FontAwesomeIcon icon={faLock} />
+                                                        <p className={cx('option')}>Password</p>
+                                                    </div>
+                                                </Link>
+                                                <div
+                                                    className={cx('dropdown-item')}
+                                                    onClick={() => {
+                                                        localStorage.removeItem('user');
+                                                        // window.location.reload();
+                                                        navigator('/login');
+                                                    }}
+                                                >
+                                                    <FontAwesomeIcon icon={faArrowRightFromBracket} />
+                                                    <p className={cx('option')}>Log Out</p>
                                                 </div>
-                                            </Link>
-                                            <Link to={'/user/order'}>
-                                                <div className={cx('dropdown-item')}>
-                                                    <FontAwesomeIcon icon={faWallet} />
-                                                    <p className={cx('option')}>Purchase Order</p>
-                                                </div>
-                                            </Link>
-                                            <Link to={'/user/password'}>
-                                                <div className={cx('dropdown-item')}>
-                                                    <FontAwesomeIcon icon={faLock} />
-                                                    <p className={cx('option')}>Password</p>
-                                                </div>
-                                            </Link>
-                                            <div
-                                                className={cx('dropdown-item')}
-                                                onClick={() => {
-                                                    localStorage.removeItem('user');
-                                                    // window.location.reload();
-                                                    navigator('/login');
-                                                }}
-                                            >
-                                                <FontAwesomeIcon icon={faArrowRightFromBracket} />
-                                                <p className={cx('option')}>Log Out</p>
                                             </div>
-                                        </div>
+                                        ) : (
+                                            <div className={cx('dropdown-content', display ? 'active' : '')}>
+                                                <Link to={'/admin'}>
+                                                    <div className={cx('dropdown-item')}>
+                                                        <FontAwesomeIcon icon={faUser} />
+                                                        <p className={cx('option')}>Admin</p>
+                                                    </div>
+                                                </Link>
+                                                <Link to={'/user/profile'}>
+                                                    <div className={cx('dropdown-item')}>
+                                                        <FontAwesomeIcon icon={faUser} />
+                                                        <p className={cx('option')}>Your Profile</p>
+                                                    </div>
+                                                </Link>
+                                                <Link to={'/user/order'}>
+                                                    <div className={cx('dropdown-item')}>
+                                                        <FontAwesomeIcon icon={faWallet} />
+                                                        <p className={cx('option')}>Purchase Order</p>
+                                                    </div>
+                                                </Link>
+                                                <Link to={'/user/password'}>
+                                                    <div className={cx('dropdown-item')}>
+                                                        <FontAwesomeIcon icon={faLock} />
+                                                        <p className={cx('option')}>Password</p>
+                                                    </div>
+                                                </Link>
+                                                <div
+                                                    className={cx('dropdown-item')}
+                                                    onClick={() => {
+                                                        localStorage.removeItem('user');
+                                                        // window.location.reload();
+                                                        navigator('/login');
+                                                    }}
+                                                >
+                                                    <FontAwesomeIcon icon={faArrowRightFromBracket} />
+                                                    <p className={cx('option')}>Log Out</p>
+                                                </div>
+                                            </div>
+                                        )}
                                     </div>
                                 </div>
                             </div>

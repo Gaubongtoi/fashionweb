@@ -8,7 +8,8 @@ import { formatPrice, priceDiscount } from '~/common';
 import { toast } from 'react-toastify';
 const cx = classNames.bind(styles);
 function Product_Item({ item, index }) {
-    const [size, setSize] = useState();
+    console.log(item);
+    const [size, setSize] = useState(item?.size);
     const [quantity_Order, setQuantity_Order] = useState();
     const state = useContext(UserContext);
     const [sizeProd, setSizeProd] = useState(
@@ -18,11 +19,18 @@ function Product_Item({ item, index }) {
     );
     const size_quantity_select = useMemo(() => {
         // console.log('re-render');
+        console.log(item?.product?.inventory);
         return item?.product?.inventory?.find((obj) => obj?.size === size)?.quantity;
     }, [size, quantity_Order]);
+    console.log(size_quantity_select);
     useEffect(() => {
         setQuantity_Order(item?.quantity);
         setSize(item.size);
+        setSizeProd(() => {
+            return item?.product?.inventory.filter((prod) => {
+                return prod.quantity > 0;
+            });
+        });
     }, [item]);
     useEffect(() => {
         if (size_quantity_select < quantity_Order) {
@@ -36,7 +44,9 @@ function Product_Item({ item, index }) {
     // setSizeProd(avaliableSize);
     // console.log(quantity_Order);
     const modifyQuantity = (click) => {
+        // Lấy ra giá trị oldCart
         let oldCart = state.cart.value;
+
         let product_selected = oldCart.find((i) => i.id === item.id && i.size === item.size);
         oldCart = oldCart.filter((i) => i.id + i.size !== item.id + item.size);
         let quantityUpdate = item.quantity;

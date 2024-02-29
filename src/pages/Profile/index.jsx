@@ -64,6 +64,8 @@ function Profile() {
         address: watch('address', defaultValues.address),
         // Lấy giá trị của các trường input khác và gán vào đây
     };
+    console.log(defaultValues.fullname);
+    console.log(currentValues.fullname);
     useEffect(() => {
         const isDirty = Object.keys(dirtyFields).some(
             (fieldName) => currentValues[fieldName] !== defaultValues[fieldName],
@@ -130,7 +132,6 @@ function Profile() {
                 <div className={cx('header-title')}>
                     <p className={cx('title')}>Personal Information</p>
                 </div>
-
                 <div className={cx('content-wrapper')}>
                     <div className={cx('avatar')}>
                         <AvatarAuto nameU={state?.cuser?.value?.fullname} />

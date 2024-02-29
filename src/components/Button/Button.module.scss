@@ -185,3 +185,21 @@ $color: #ab8a37;
     color: white;
     background: var(--Primary, #1b4b66);
 }
+
+.managerOrder {
+    flex-basis: 12%;
+    font-size: 1.2rem;
+    padding: 9px 10px;
+    &:hover {
+        background-color: darken(#ab8a37, 10%);
+    }
+}
+
+.manageReturn {
+    flex-basis: 14%;
+    font-size: 1.2rem;
+    // padding: 9px 10px;
+    &:hover {
+        background-color: darken(#ab8a37, 10%);
+    }
+}

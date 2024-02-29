@@ -10,7 +10,7 @@
 
 .pagination {
     display: flex;
-    width: 340px;
+    width: 100%;
     justify-content: end;
 }
 .pagination > li {

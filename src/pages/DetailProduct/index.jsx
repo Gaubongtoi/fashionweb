@@ -81,6 +81,7 @@ function DetailProduct() {
         // console.log(id);
         // Tạo ra 1 object chứa những thông tin cần thiết của 1 sản phẩm cần thêm
         // Lưu ý cần phải lựa chọn những properties để dễ dàng cho việc call API
+        console.log(id);
         const productAdd = {
             id: id,
             size: checked,

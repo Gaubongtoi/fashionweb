@@ -19,6 +19,8 @@ const images = {
     decresase: require('./sort-down.svg').default,
     eye: require('./eye.svg').default,
     eye_slash: require('./eye-slash.svg').default,
+    upload: require('./upload.svg').default,
+    comming: require('./1600w-iv_vQnhdRkY.png'),
 };
 
 export default images;

@@ -1,0 +1,8 @@
+.custom-modal {
+    /* Quy tắc ghi đè cho lớp ReactModal__Overlay */
+    /* background-color: red !important; */
+    /* position: fixed; */
+    /* inset: 0px; */
+    background-color: rgba(255, 255, 255, 0.75);
+    /* z-index: 10; */
+}

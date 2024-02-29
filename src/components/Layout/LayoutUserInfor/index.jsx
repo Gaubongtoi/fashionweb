@@ -5,7 +5,7 @@ import styles from './LayoutUserInfor.module.scss';
 import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 const cx = classNames.bind(styles);
-function LayoutUserInfor({ children, path, title, profile = false, order = false, password = false }) {
+function LayoutUserInfor({ children, path, title, profile = false, order = false, password = false, returnn = false }) {
     const navigate = useNavigate();
     const handleLogout = () => {
         localStorage.removeItem('user');
@@ -42,6 +42,10 @@ function LayoutUserInfor({ children, path, title, profile = false, order = false
                         </li>
                         <li className={cx(order ? 'isActive' : '')}>
                             <Link to="/user/order">My Orders</Link>
+                            <FontAwesomeIcon icon={faChevronRight}></FontAwesomeIcon>
+                        </li>
+                        <li className={cx(returnn ? 'isActive' : '')}>
+                            <Link to="/user/return">Returns</Link>
                             <FontAwesomeIcon icon={faChevronRight}></FontAwesomeIcon>
                         </li>
                     </ul>
