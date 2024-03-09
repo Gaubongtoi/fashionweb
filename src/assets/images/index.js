@@ -20,7 +20,11 @@ const images = {
     eye: require('./eye.svg').default,
     eye_slash: require('./eye-slash.svg').default,
     upload: require('./upload.svg').default,
-    comming: require('./1600w-iv_vQnhdRkY.png'),
+    brand_Adidas: require('./brand_shoes_Adidas.png'),
+    brand_Converse: require('./brand_shoes_Converse.png'),
+    brand_Nike: require('./brand_shoes_Nike.png'),
+    brand_Puma: require('./brand_shoes_Puma.png'),
+    brand_Vans: require('./brand_shoes_Vans.png'),
 };
 
 export default images;

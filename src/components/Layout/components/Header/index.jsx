@@ -55,8 +55,6 @@ function Header() {
                         product: products?.find((i) => i.id == item.id),
                     };
                 });
-                console.log('Hello');
-                console.log(products);
                 setCartHeader(a);
                 // setProduct(products);
             } catch (error) {

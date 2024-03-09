@@ -1,0 +1,29 @@
+.slick-prev.slick-disabled:before,
+.slick-next.slick-disabled:before {
+    opacity: 0.25;
+    color: var(--primary);
+}
+
+.slick-prev:hover:before,
+.slick-prev:focus:before,
+.slick-next:hover:before,
+.slick-next:focus:before {
+    opacity: 1;
+    color: var(--primary);
+}
+
+.slick-prev:before,
+.slick-next:before {
+    font-family: 'slick';
+    font-size: 30px;
+    line-height: 1;
+    opacity: 0.75;
+    color: white;
+    -webkit-font-smoothing: antialiased;
+    color: var(--primary);
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.slick-prev {
+    left: -60px;
+}
