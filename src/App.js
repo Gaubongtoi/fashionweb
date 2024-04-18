@@ -21,6 +21,7 @@ import Return from './pages/Return';
 import UserReturn from './pages/UserReturn';
 import DetailRefund from './pages/DetailRefund';
 import ManageReturn from './pages/ManageReturn';
+import Wishlist from './pages/Wishlist';
 function App() {
     const state = useContext(UserContext);
     const [role, setRole] = useState();
@@ -132,6 +133,16 @@ function App() {
                                         <DefaultLayout>
                                             <LayoutUserInfor path={'Returns'} title={'Returns'} returnn={true}>
                                                 <DetailRefund></DetailRefund>
+                                            </LayoutUserInfor>
+                                        </DefaultLayout>
+                                    }
+                                />
+                                <Route
+                                    path="/user/wishlist"
+                                    element={
+                                        <DefaultLayout>
+                                            <LayoutUserInfor path={'Wishlist'} title={'Wishlist'} wishlist={true}>
+                                                <Wishlist></Wishlist>
                                             </LayoutUserInfor>
                                         </DefaultLayout>
                                     }

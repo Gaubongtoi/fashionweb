@@ -8,7 +8,6 @@ import { formatPrice, priceDiscount } from '~/common';
 import { toast } from 'react-toastify';
 const cx = classNames.bind(styles);
 function Product_Item({ item, index }) {
-    console.log(item);
     const [size, setSize] = useState(item?.size);
     const [quantity_Order, setQuantity_Order] = useState();
     const state = useContext(UserContext);
@@ -19,10 +18,10 @@ function Product_Item({ item, index }) {
     );
     const size_quantity_select = useMemo(() => {
         // console.log('re-render');
-        console.log(item?.product?.inventory);
+        // console.log(item?.product?.inventory);
         return item?.product?.inventory?.find((obj) => obj?.size === size)?.quantity;
     }, [size, quantity_Order]);
-    console.log(size_quantity_select);
+    // console.log(size_quantity_select);
     useEffect(() => {
         setQuantity_Order(item?.quantity);
         setSize(item.size);

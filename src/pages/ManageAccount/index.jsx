@@ -22,6 +22,7 @@ const Team = () => {
     };
     useEffect(() => {
         const accessToken = JSON.parse(localStorage.getItem('accessToken'));
+        console.log(accessToken);
         axios
             .get('http://localhost:4000/auth/all-user', {
                 headers: {

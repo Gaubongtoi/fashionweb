@@ -25,6 +25,7 @@ const images = {
     brand_Nike: require('./brand_shoes_Nike.png'),
     brand_Puma: require('./brand_shoes_Puma.png'),
     brand_Vans: require('./brand_shoes_Vans.png'),
+    heart_wishlist: require('./heart_wishlist.svg').default,
 };
 
 export default images;

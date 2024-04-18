@@ -5,7 +5,7 @@ import classNames from 'classnames/bind';
 import axios from 'axios';
 
 import styles from './DetailProduct.module.scss';
-import { formatPrice, priceDiscount } from '~/common';
+import { expectedDate, formatPrice, priceDiscount } from '~/common';
 import images from '~/assets/images';
 import Button from '~/components/Button';
 import Carousel from '~/components/Carousel/Carousel_Detail_Product';
@@ -14,6 +14,9 @@ import { setLoading } from '~/components/PageLoading/store/action';
 import { actions } from '~/components/PageLoading/store';
 import { toast } from 'react-toastify';
 import { UserContext } from '~/hooks/UserContext';
+import { FaStar, FaStarHalf } from 'react-icons/fa';
+import { AiOutlineStar } from 'react-icons/ai';
+import AvatarAuto from '~/components/AvatarAuto';
 
 // Constance
 const cx = classNames.bind(styles);
@@ -36,26 +39,42 @@ function DetailProduct() {
         'Colour Shown: Ale Brown/Black/Goldtone/Ale Brown',
         'Style: 805899-202',
     ];
-
+    const param = useParams();
     const [isLoading, dispatch] = useContext(StoreContext);
     const state = useContext(UserContext);
-    // console.log(isLoading);
     const [type, setType] = useState('Description');
     const [product, setProduct] = useState({});
     const [image, setImage] = useState([]);
     const [size, setSize] = useState([]);
     const [checked, setChecked] = useState();
     const [quantity_Order, setQuantity_Order] = useState(1);
-    // console.log(checked);
+    const [reviews, setReviews] = useState([]);
     const [size_Order, setSize_Order] = useState('');
+    const totalReviews = reviews.length;
+    const ratingsCount = Array.from(
+        { length: 5 },
+        (_, i) => reviews.filter((review) => review.rating === i + 1).length,
+    );
+    const size_quantity_select = product?.inventory?.find((obj) => obj?.size === checked)?.quantity;
+
+    // Tính toán số phần trăm cho mỗi số sao
+    const ratingPercentages = ratingsCount.map((count) => (count / totalReviews) * 100);
+    const sortedRatingPercentages = ratingPercentages.slice().reverse();
+    // Tính trung bình rating
+    const averageRating = useMemo(() => {
+        let result = reviews.map((review) => review.rating).reduce((acc, curr) => acc + curr, 0) / reviews.length;
+        return result;
+    }, [reviews]);
+    // console.log();
     // useParam: lấy được param được route bên thẻ App.js (được nhận biết bằng dấu : ở trước param)
     // => {id: ...}
-    const param = useParams();
     // Fake API: Sử dụng json-server => custom lại data trả về
     useEffect(() => {
         const fetchData = async () => {
             try {
                 const res = await axios.get(`http://localhost:3000/product/${param.id}`);
+                const review = await axios.get(`http://localhost:3000/reviews?product.id=${param.id}`);
+                setReviews(review.data);
                 setProduct(res.data);
                 setImage(res?.data?.imgs);
                 const sizes = res.data.inventory.reduce((total, currentValue) => {
@@ -75,19 +94,12 @@ function DetailProduct() {
             await fetchData();
         }, 3000);
     }, [param]);
-    const size_quantity_select = product?.inventory?.find((obj) => obj?.size === checked)?.quantity;
-    // console.log(checked < size_quantity_select);
     const handleAddProductToCart = (id) => {
-        // console.log(id);
-        // Tạo ra 1 object chứa những thông tin cần thiết của 1 sản phẩm cần thêm
-        // Lưu ý cần phải lựa chọn những properties để dễ dàng cho việc call API
-        console.log(id);
         const productAdd = {
             id: id,
             size: checked,
             quantity: quantity_Order,
         };
-        // console.log(productAdd);
         // Cần phải kiểm tra trước khi get ra dữ liệu => để tránh xảy ra lỗi
         if (!Boolean(localStorage.getItem('cart'))) {
             localStorage.setItem('cart', JSON.stringify([]));
@@ -142,8 +154,6 @@ function DetailProduct() {
 
         // console.log(product_list);
     };
-    // console.log(size_quantity_select);
-    // console.log(checked);
     return (
         <>
             <div className={cx('wrapper')}>
@@ -187,11 +197,11 @@ function DetailProduct() {
                                     <div className={cx('star-reviews')}>
                                         <div className={cx('star')}>
                                             <img src={images.star} alt="" />
-                                            <span>4.8</span>
+                                            <span>{averageRating.toFixed(1)}</span>
                                         </div>
                                         <div className={cx('previews')}>
                                             <img src={images.reviews} alt="" />
-                                            <span>67 Reviews</span>
+                                            <span>{reviews.length} Reviews</span>
                                         </div>
                                         <div className={cx('heart')}>
                                             <img src={images.heart} alt="" />
@@ -394,8 +404,40 @@ function DetailProduct() {
                                 </div>
                             </>
                         ) : (
+                            // Review Product
                             <>
-                                <div></div>
+                                {reviews && reviews.length > 0 ? (
+                                    <>
+                                        <div className={cx('review-total')}>
+                                            <div className={cx('left-review-total')}>
+                                                <div className={cx('average-wrapper')}>
+                                                    <p className={cx('average-title')}>Employee Reviews</p>
+                                                    <p className={cx('average-number')}>{averageRating.toFixed(1)}</p>
+                                                    <AverageStar stars={averageRating.toFixed(1)} reviews={reviews} />
+                                                    <p>({reviews.length} Reviews)</p>
+                                                </div>
+                                            </div>
+                                            <div className={cx('right-review-total')}>
+                                                {Array.from({ length: 5 }, (_, i) => (
+                                                    <RatingBar
+                                                        key={i + 1}
+                                                        stars={5 - i}
+                                                        ratingPercent={sortedRatingPercentages[i]}
+                                                        reviews={reviews}
+                                                    />
+                                                ))}
+                                            </div>
+                                        </div>
+                                        <div className={cx('reviews-wrapper')}>
+                                            <Review reviews={reviews} />
+                                        </div>
+                                    </>
+                                ) : (
+                                    <div className={cx('notification')}>
+                                        {/* <h1>Xin chao</h1> */}
+                                        <p>Chưa có reviews nào về sản phẩm này</p>
+                                    </div>
+                                )}
                             </>
                         )}
 
@@ -412,3 +454,60 @@ function DetailProduct() {
 }
 
 export default DetailProduct;
+
+function Review({ reviews }) {
+    return (
+        <>
+            <div className={cx('reviews-sort-wrapper')}></div>
+            <div className={cx('reviews')}>
+                {reviews.map((review, index) => {
+                    // console.log(review.name);
+                    return (
+                        <div className={cx('review')}>
+                            <p className={cx('review-date-create')}>{expectedDate(review.createdAt)}</p>
+                            <AverageStar stars={review.rating} />
+                            <div className={cx('review-infor')}>
+                                <AvatarAuto nameU={review.client_name} />
+                                <p>{review.client_name}</p>
+                            </div>
+                            {/* <div className={}></div> */}
+                            <p className={cx('review-size')}>Size: {review.product.size}</p>
+                            <p className={cx('review-comment')}>{review.comment}</p>
+                        </div>
+                    );
+                })}
+            </div>
+        </>
+    );
+}
+
+function RatingBar({ stars, ratingPercent, reviews }) {
+    let quantity = reviews.filter((review) => review.rating === stars).length;
+    return (
+        <div className={cx('rating-bar')}>
+            <label>{stars} stars</label>
+            <progress className={cx('progress')} value={ratingPercent} max="100">
+                {ratingPercent}%
+            </progress>
+            <label>{quantity}</label>
+        </div>
+    );
+}
+
+function AverageStar({ stars }) {
+    const ratingStar = Array.from({ length: 5 }, (elem, index) => {
+        let number = index + 0.5;
+        return (
+            <span key={index}>
+                {stars >= index + 1 ? (
+                    <FaStar size={30} className={cx('star-click')} color="#E7B66B" />
+                ) : stars >= number ? (
+                    <FaStarHalf className={cx('star-click')} color="#E7B66B" size={30} />
+                ) : (
+                    <AiOutlineStar className={cx('star-click')} size={34} />
+                )}
+            </span>
+        );
+    });
+    return <div className={cx('rating-left-star')}>{ratingStar}</div>;
+}
