@@ -14,12 +14,15 @@ import { StoreContext } from '~/components/PageLoading/store';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown, faSortUp, faSortDown, faBaseball, faChevronUp } from '@fortawesome/free-solid-svg-icons';
 import './pagination.css';
+import { UserContext } from '~/hooks/UserContext';
+import { toast } from 'react-toastify';
 
 const cx = classNames.bind(styles);
 
 function Product() {
     const navigate = useNavigate();
     const location = useLocation();
+    const state = useContext(UserContext);
     const [isLoading, dispatch] = useContext(StoreContext);
     const [selected, setSelected] = useState('All');
     const searchParams = new URLSearchParams(location.search);
@@ -55,6 +58,7 @@ function Product() {
                     },
                 });
                 // response.headers('X-Total-Count', )
+                console.log(response);
                 const xTotalCount = response.headers['x-total-count'];
                 // console.log(response);
                 setTotalPages(numPages(Number(+xTotalCount)));
@@ -103,6 +107,46 @@ function Product() {
         }
         setDisplay(false);
     };
+    const handleRemoveWishList = (prod_id) => {
+        let id_remove = state?.wishlist?.value?.find((w) => w.product_id === prod_id).id;
+        const fetchData = async () => {
+            try {
+                await axios.delete(`http://localhost:3000/wishlist/${id_remove}`);
+                state?.render?.setRender((prev) => !prev);
+            } catch (error) {
+                console.log(error);
+            }
+        };
+        fetchData();
+    };
+    const handleAddWishList = (prod) => {
+        // console.log(prod);
+        let data = {
+            client_id: state?.cuser?.value?.id,
+            product_id: prod.id,
+            product: prod,
+        };
+        const fetchData = async () => {
+            try {
+                const response = await axios.post(`http://localhost:3000/wishlist`, data);
+                // toast.success(`Add product to wishlist success`, {
+                //     position: 'top-right',
+                //     autoClose: 3000,
+                //     hideProgressBar: false,
+                //     closeOnClick: true,
+                //     pauseOnHover: true,
+                //     draggable: true,
+                //     progress: undefined,
+                //     // theme: 'light',
+                //     theme: 'colored',
+                // });
+                state?.render?.setRender((prev) => !prev);
+            } catch (error) {
+                console.log(error);
+            }
+        };
+        fetchData();
+    };
     return (
         <>
             <div className={cx('quantity-filter-wrapper')}>
@@ -138,15 +182,8 @@ function Product() {
                         </div>
                     </div>
                 </div>
-                {/* <div className={cx('filter')}>
-                    <p>Sort by:</p>
-                    <span className={cx('title')}>All</span>
-                    <FontAwesomeIcon icon={faChevronDown} />
-                </div> */}
             </div>
             <div className={cx('wrapper')}>
-                {/* <div ></div> */}
-                {/* Component */}
                 {productsPerPage.length > 0 &&
                     productsPerPage.map((prod, i) => {
                         // console.log(prod);
@@ -178,9 +215,19 @@ function Product() {
                                     </p>
                                     <p className={cx('old-price')}>{formatPrice(prod.price)}</p>
                                 </div>
-                                <div className={cx('loved')}>
+                                {state?.wishlist?.value.some((item) => item.product_id === prod.id) ? (
+                                    <div className={cx('loved')} onClick={() => handleRemoveWishList(prod.id)}>
+                                        <img src={images.heart_wishlist} alt="" />
+                                        {/* <p>Có tồn tại</p> */}
+                                    </div>
+                                ) : (
+                                    <div className={cx('loved')} onClick={() => handleAddWishList(prod)}>
+                                        <img src={images.unheart} alt="" />
+                                    </div>
+                                )}
+                                {/* <div className={cx('loved')} onClick={() => handleWishList(prod)}>
                                     <img src={images.unheart} alt="" />
-                                </div>
+                                </div> */}
                             </div>
                         );
                     })}

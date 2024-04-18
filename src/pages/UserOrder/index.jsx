@@ -7,6 +7,7 @@ import { formatPrice, priceDiscount } from '~/common';
 import { useNavigate } from 'react-router-dom';
 import Button from '~/components/Button';
 import { toast } from 'react-toastify';
+import ModalRating from './ModalRating';
 const cx = classNames.bind(styles);
 
 function UserOrder() {
@@ -15,6 +16,7 @@ function UserOrder() {
     const state = useContext(UserContext);
     const [orders, setOrders] = useState([]);
     let [deliAmount, setDeliAmount] = useState();
+
     useEffect(() => {
         axios.get('http://localhost:3000' + `/orders?client_id=${state?.cuser?.value?.id}`).then((res) => {
             let orderUser = [...res.data].reverse();
@@ -36,31 +38,43 @@ function UserOrder() {
         });
     }, [pagCurr]);
     return (
-        <div className={cx('wrapper')}>
-            <ul className={cx('navigate')}>
-                {pagName.map((item, index) => (
-                    <li
-                        key={item}
-                        className={cx({ li_active: index === pagCurr })}
-                        onClick={() => {
-                            setPagCurr(index);
-                        }}
-                    >
-                        {item} {index === 2 && <span>({deliAmount})</span>}
-                    </li>
-                ))}
-            </ul>
-            <div className={cx('table')}>
-                <Orders orders={orders} userID={state?.cuser?.value?.id} />
+        <>
+            <div className={cx('wrapper')}>
+                <ul className={cx('navigate')}>
+                    {pagName.map((item, index) => (
+                        <li
+                            key={item}
+                            className={cx({ li_active: index === pagCurr })}
+                            onClick={() => {
+                                setPagCurr(index);
+                            }}
+                        >
+                            {item} {index === 2 && <span>({deliAmount})</span>}
+                        </li>
+                    ))}
+                </ul>
+                <div className={cx('table')}>
+                    <Orders orders={orders} userID={state?.cuser?.value?.id} />
+                </div>
             </div>
-        </div>
+        </>
     );
 }
 
 export default UserOrder;
 
 function Orders({ orders, userID }) {
+    // console.log(orders?.products);
     const navigator = useNavigate();
+    const [render, setRender] = useState(false);
+    const [showModal, setShowModal] = useState(false);
+    const [orderId, setOrderId] = useState();
+    // Modal Detail
+    const handleClose = () => setShowModal(false);
+    const handleShow = () => setShowModal(true);
+    const handleReRender = () => {
+        setRender((prev) => !prev);
+    };
     const handleChangePage = (id) => {
         navigator(`/user/order/detail/${id}`);
         window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -100,7 +114,7 @@ function Orders({ orders, userID }) {
         <>
             {orders.map((order, i) => {
                 // console.log(order);
-
+                // console.log();
                 return (
                     <div className={cx('order')} key={i}>
                         <div className={cx('header-bill')}>
@@ -207,11 +221,49 @@ function Orders({ orders, userID }) {
                                             Received
                                         </Button>
                                     ))}
+                                {/* Rating */}
+                                {/* {order?.status === 3 && order?.isPay === 1 && order?.rating === 0 ? (
+                                    <Button
+                                        primary
+                                        onClick={() => {
+                                            console.log('Hello');
+                                        }}
+                                    >
+                                        Rating your Order!
+                                    </Button>
+                                ) : (
+                                    <Button primary disabled>
+                                        Rated!
+                                    </Button>
+                                )} */}
+                                {order?.status === 3 &&
+                                    order?.isPay === 1 &&
+                                    (order?.products?.some((prod) => prod.rating === 0) ? (
+                                        <Button
+                                            primary
+                                            onClick={() => {
+                                                setOrderId(order?.id);
+                                                handleShow();
+                                            }}
+                                        >
+                                            Rating your Order!
+                                        </Button>
+                                    ) : (
+                                        <Button primary disabled>
+                                            Rated!
+                                        </Button>
+                                    ))}
                             </div>
                         </div>
                     </div>
                 );
             })}
+            <ModalRating
+                show={showModal}
+                handleClose={handleClose}
+                handleReRender={handleReRender}
+                orderId={orderId}
+            ></ModalRating>
         </>
     );
 }

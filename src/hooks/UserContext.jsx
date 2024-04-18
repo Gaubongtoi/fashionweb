@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { createContext, useState, useEffect } from 'react';
 import { isAuthenticated } from '~/service/AuthService';
 // Khoi tao UserContext bang createContext
@@ -7,6 +8,10 @@ const UserProvider = ({ children }) => {
     // Khoi tao bien State de luu tru trang thai nguoi dung
     const [currentUser, setCurrentUser] = useState(null);
     const [cart, setCart] = useState([]);
+    const [wishlist, setWishlist] = useState([]);
+    console.log(wishlist);
+    const [render, setRender] = useState(false);
+
     // console.log(JSON.parse(cart));
     const state = {
         cart: {
@@ -16,6 +21,14 @@ const UserProvider = ({ children }) => {
         cuser: {
             value: currentUser,
             setCurrentUser,
+        },
+        wishlist: {
+            value: wishlist,
+            setWishlist,
+        },
+        render: {
+            value: render,
+            setRender,
         },
     };
     // useEffect se duoc goi moi khi Component Mounted lan dau tien
@@ -47,6 +60,32 @@ const UserProvider = ({ children }) => {
         let cart = JSON.parse(localStorage.getItem('cart'));
         setCart(cart);
     }, []);
+    useEffect(() => {
+        const getData = async () => {
+            let cuser = isAuthenticated();
+            if (cuser === null) {
+                setWishlist([]);
+            } else {
+                try {
+                    const res = await axios.get(`http://localhost:3000/wishlist?client_id=${currentUser?.id}`);
+                    // console.log(res.data);
+                    // let a = res?.data?.map((item) => {
+                    //     // console.log(products);
+                    //     // console.log(products?.find((i) => i.id == item.id_product));
+                    //     return {
+                    //         ...item,
+                    //         isChecked: false,
+                    //     };
+                    // });
+                    // // console.log(a);
+                    setWishlist(res.data);
+                } catch (error) {
+                    console.error('Error fetching cart data:', error);
+                }
+            }
+        };
+        getData();
+    }, [currentUser, render]);
     //
     // console.log(currentUser);
     return (

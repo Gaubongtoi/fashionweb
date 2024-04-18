@@ -27,7 +27,7 @@ function Cart() {
     const handleClose = () => setShowModal(false);
     const handleShow = () => setShowModal(true);
     const navigate = useNavigate();
-    console.log(city);
+    // console.log(city);
     const schema = yup
         .object()
         .shape({
@@ -61,7 +61,7 @@ function Cart() {
     // console.log(totalProduct);
     // console.log(product);
     const state = useContext(UserContext);
-    console.log(state?.cart?.value);
+    // console.log(state?.cart?.value);
     useEffect(() => {
         let product_id = state.cart.value.map((i) => i.id);
         const fetchProducts = async () => {
@@ -73,15 +73,17 @@ function Cart() {
                 let product_cart = state?.cart?.value;
                 // console.log(product_cart);
                 let a = product_cart?.map((item) => {
-                    console.log(products);
-
-                    return {
+                    let prodRating = {
                         ...item,
+                        rating: 0,
+                    };
+                    return {
+                        ...prodRating,
                         product: products?.find((i) => i.id == item.id),
                     };
                 });
-                console.log('Hello');
-                console.log(products);
+                // console.log('Hello');
+                // console.log(products);
                 setProduct(a);
                 // setProduct(products);
             } catch (error) {
@@ -123,6 +125,7 @@ function Cart() {
     // console.log(subtotal);
     const handlePay = (data) => {
         // console.log(data);
+        // let productRating = [...product];
         let dataPost = {
             client_id: state.cuser.value.id,
             firstname: data.firstname,
@@ -135,7 +138,6 @@ function Cart() {
             amount: totalSum,
             isPay: 0,
             products: product,
-            rating: 0,
         };
         // console.log(dataPost);
         axios.post('http://localhost:3000/orders', dataPost).then((res) => {
@@ -166,7 +168,6 @@ function Cart() {
                 </div>
                 <div className={cx('product')}>
                     {product?.map((item, i) => {
-                        console.log(item);
                         return <Product_Item item={item} key={i} index={i}></Product_Item>;
                     })}
                 </div>

@@ -48,8 +48,6 @@ function Header() {
                 let product_cart = state?.cart?.value;
                 // console.log(product_cart);
                 let a = product_cart?.map((item) => {
-                    console.log(products);
-
                     return {
                         ...item,
                         product: products?.find((i) => i.id == item.id),

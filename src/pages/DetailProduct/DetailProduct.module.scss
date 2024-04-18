@@ -364,3 +364,117 @@ $white: #fff;
         font-weight: 500;
     }
 }
+
+.notification {
+    width: 100%;
+    // text-align: center;
+    display: flex;
+    // align-items: center;
+    justify-content: center;
+    // height: 100%;
+    border-top: 4px solid grey;
+    border-bottom: 4px solid grey;
+
+    // min-height: 400px;
+    p {
+        color: #5e5d5d;
+        font-size: 30px;
+        margin: 50px 0;
+        text-align: center;
+        text-transform: uppercase;
+    }
+}
+
+.review-total {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 8px;
+    margin-bottom: 24px;
+    .left-review-total {
+        display: flex;
+        justify-content: center;
+        width: 48%;
+    }
+    .right-review-total {
+        width: 48%;
+    }
+}
+
+.rating-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    &:not(:last-child) {
+        // border-bottom: 1px solid black;
+        padding-bottom: 14px;
+    }
+    progress {
+        flex-grow: 1;
+        margin: 0 30px 0 16px;
+        background-color: #fff0f0;
+        &::-webkit-progress-bar {
+            background-color: #f2f6fb;
+            border-radius: 7px;
+        }
+        &::-webkit-progress-value {
+            background-color: #e7b66b;
+            border-radius: 7px;
+            // box-shadow: 1px 1px 5px 3px rgba(255, 0, 0, 0.8);
+        }
+    }
+}
+
+.rating-left-star {
+    display: flex;
+    padding-bottom: 4px;
+}
+
+.average-wrapper {
+    .average-title {
+        font-size: 2.4rem;
+        font-weight: 600;
+    }
+    .average-number {
+        font-size: 4rem;
+        font-weight: 700;
+    }
+    p:not(:last-child) {
+        padding-bottom: 4px;
+    }
+}
+
+.review {
+    margin-bottom: 12px;
+    p:not(:last-child) {
+        padding-bottom: 12px;
+    }
+    &:not(:last-child) {
+        border-bottom: 1px solid black;
+        padding-bottom: 12px;
+    }
+    .review-date-create {
+        color: #858585;
+        font-size: 1.2rem;
+        font-weight: 600;
+    }
+    .review-infor {
+        display: flex;
+        align-items: center;
+        padding: 12px 0;
+        p {
+            margin-left: 8px;
+            font-size: 1.4rem;
+            font-weight: 600;
+        }
+    }
+    .review-size {
+        color: #858585;
+        font-size: 1.4rem;
+        font-weight: 500;
+    }
+    .review-comment {
+    }
+}
